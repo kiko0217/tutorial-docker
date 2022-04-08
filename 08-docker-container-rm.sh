@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # set -e
 containsElement () {
   local e match="$1"
@@ -13,11 +13,28 @@ usage() {
     echo "usage: $0 namecontainer"
     exit 1
 }
+notexit() {
+    echo $1 not exist
+    exit 1
+}
 [[ $# -ne 1 ]] && usage
 array=($(docker ps -a --format '{{.Names}}'))
-containsElement "$"
-# docker container rm contohredis
-# echo $?
+containsElement $1 "${array[@]}"
+[[ $? -ne 0 ]] && notexit
+docker container rm $1
+if [ $? -eq 0 ] 
+then
+    exit 0
+else
+    docker container stop $1 && docker container rm $1
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    else
+        
+        exit 0
+    fi
+fi 
 # array=( $( ls . ) )
 # echo ${array[2]}
 # for file in ${array[@]}
