@@ -5,6 +5,6 @@ usage() {
     exit 1
 }
 
-[[ $# -ne 3 ]] && usage || echo create conatiner $1 dengan image $2 port forwarding $3
+[[ $# -ne 3 ]] && usage || echo create container $1 dengan image $2 port forwarding $3
 
 docker container create --name $1 --publish $3 $2
