@@ -21,7 +21,7 @@ notexist() {
 array=($(docker ps -a --format '{{.Names}}'))
 containsElement $1 "${array[@]}"
 [[ $? -ne 0 ]] && notexist
-(docker container rm $1 || docker container stop $1) && docker container rm $1
+docker container rm $1 || (docker container stop $1 && docker container rm $1)
 [[ $? -eq 0 ]] && echo remove $1 successfully || echo failed remove $1
 # if [ $? -eq 0 ] 
 # then
